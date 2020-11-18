@@ -10,6 +10,7 @@ module Caml_io = Gen.Make(Gen_caml.Generator_io)
 module Xml_gen = Gen.Make(Gen_xml)
 module Java = Gen.Make(Gen_java)
 module CSharp = Gen.Make(Gen_csharp)
+module PHP_Api = Gen.Make(Gen_php_api)
 
 (*
   common usecase:
@@ -27,6 +28,7 @@ let set_out s =
   | "xml" -> Some Xml_gen.process
   | "java" -> Some Java.process
   | "csharp" | "c#" | "cs" -> Some CSharp.process
+  | "php_api" -> Some PHP_Api.process
   | "none" -> None
   | _ -> failwith (sprintf "Unknown output language: %s" s)
 
@@ -92,7 +94,7 @@ let main () =
   [
     "-version", Arg.Unit show_version, " Show version";
     "-category", Arg.String set_category, sprintf "{all|none|[-]<category>{,<category>}+} Only generate code for these specific query categories (possible values: %s)" all_categories;
-    "-gen", Arg.String set_out, "cxx|caml|java|xml|csharp|none Set output language (default: none)";
+    "-gen", Arg.String set_out, "cxx|caml|java|xml|csharp|php_api|none Set output language (default: none)";
     "-name", Arg.String (fun x -> name := x), "<identifier> Set output module name (default: sqlgg)";
     "-params", Arg.String set_params_mode, "named|unnamed|oracle|postgresql|none Output query parameters substitution (default: none)";
     "-debug", Arg.Int Sqlgg_config.set_debug_level, "<N> set debug level";
