@@ -124,6 +124,14 @@ let generate () _ stmts =
   output "$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_NUM);";
   empty_line ();
   output "header('Content-type', 'application/json');";
+  output "try";
+  G.open_curly ();
   output "if (!isset($_GET['_name'])) die('{\"error\": \"missing parameter\"}');";
   List.iteri generate_code stmts;
-  output "else die('{\"error\": \"invalid parameter\"}');"
+  output "else echo('{\"error\": \"invalid parameter\"}');";
+  G.close_curly "";
+  output "catch (Exception $e)";
+  G.open_curly ();
+  (* FIXME handle specific cases! *)
+  output "echo '{\"error\": \"internal error\"}';";
+  G.close_curly "";
