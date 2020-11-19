@@ -15,8 +15,8 @@ let empty_line = G.empty_line
 let quote = String.replace_chars (function '\n' -> "\" .\n\"" | '\r' -> "" | '"' -> "\\\"" | c -> String.make 1 c)
 let quote s = "\"" ^ quote s ^ "\""
 
-let start_stm inp name =
-  output "else if ($_%s['_name'] == %S)" inp name;
+let start_stm name =
+  output "else if ($_GET['_name'] == %S)" name;
   G.open_curly ()
 
 let end_stm name =
@@ -96,11 +96,12 @@ let generate_code index stmt =
       | [] -> "POST"
       | _ -> "GET"
    in
-   start_stm inp name;
+   start_stm name;
    output "$stm = $db->prepare(%s);" sql;
    output_params_binder inp name index params;
    begin match stmt.schema with
-   | [] -> ()
+   | [] ->
+      output "echo '[]';"
    | _ ->
       let args = List.mapi get_column stmt.schema in
       let args = String.concat ", " args in
