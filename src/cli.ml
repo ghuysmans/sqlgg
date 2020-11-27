@@ -11,6 +11,7 @@ module Xml_gen = Gen.Make(Gen_xml)
 module Java = Gen.Make(Gen_java)
 module CSharp = Gen.Make(Gen_csharp)
 module PHP_Api = Gen.Make(Gen_php_api)
+module JS_stubs = Gen.Make(Gen_js_stubs)
 
 (*
   common usecase:
@@ -29,6 +30,7 @@ let set_out s =
   | "java" -> Some Java.process
   | "csharp" | "c#" | "cs" -> Some CSharp.process
   | "php_api" -> Some PHP_Api.process
+  | "js_stubs" -> Some JS_stubs.process
   | "none" -> None
   | _ -> failwith (sprintf "Unknown output language: %s" s)
 
