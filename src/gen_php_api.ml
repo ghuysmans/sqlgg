@@ -101,7 +101,7 @@ let generate_code index stmt =
    output_params_binder inp name index params;
    begin match stmt.schema with
    | [] ->
-      output "echo '[]';"
+      output "echo json_encode(array('count' => $stm->rowCount()));"
    | _ ->
       let args = List.mapi get_column stmt.schema in
       let args = String.concat ", " args in
